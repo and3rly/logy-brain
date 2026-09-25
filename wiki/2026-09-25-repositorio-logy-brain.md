@@ -35,4 +35,5 @@ Versionar solo el brain en un repositorio propio y público de GitHub llamado `l
 ## Pendientes
 
 - [x] El usuario creó el repo público en GitHub: https://github.com/and3rly/logy-brain (el nombre final es `logy-brain`, no `brain-logy`; se actualizaron todas las referencias). Remoto `origin` configurado.
-- [ ] Commit y push inicial (el usuario, o Claude cuando se le ordene "haz commit").
+- [x] Commit inicial `a1ea0b2` hecho por Claude a pedido del usuario. El primer push lo hizo el usuario, iniciando sesión con Git Credential Manager.
+- [x] Instalación probada desde cero: se clonó el repositorio en `logy/brain` y se ejecutó `instalar.ps1`, que creó `CLAUDE.md` y `.claude/settings.json` en la raíz.
