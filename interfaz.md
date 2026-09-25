@@ -27,6 +27,7 @@ Tecnología: **Vue 3 + Vite**, en **JavaScript** (sin TypeScript), con **Vue Rou
 | bootstrap | ^5.3.8 (solo CSS) |
 | @fortawesome/fontawesome-free | ^7.3.1 |
 | @fontsource-variable/inter | ^5.3.0 |
+| axios | ^1.20.0 |
 
 ## Estructura
 
@@ -41,10 +42,12 @@ interfaz/
     │   ├── variables.css   tokens de diseño (colores, sombras, radios, medidas) y tema oscuro
     │   └── main.css        base, ajustes a Bootstrap, layout y utilidades (.icon-box, .tone-*, .avatar)
     ├── config/
-    │   ├── app.js          nombre del sistema y usuario de demostración
+    │   ├── app.js          nombre y versión del sistema
     │   └── menu.js         menú lateral (secciones → ítems → submenús)
     ├── data/demo.js        datos ficticios de los ejemplos
+    ├── services/api.js     cliente axios de la API (token, manejo de 401)
     ├── stores/plantilla.js tema, sidebar contraído, menú móvil (persistencia en localStorage)
+    ├── stores/sesion.js    token JWT y usuario de la sesión
     ├── layouts/AdminLayout.vue   sidebar + navbar + <router-view> + pie
     ├── components/
     │   ├── layout/         Sidebar, Navbar, Breadcrumb
@@ -58,10 +61,11 @@ interfaz/
 
 ## Pantallas
 
-Todas son de demostración (datos de `data/demo.js`, sin API).
+Salvo el login, son de demostración (datos de `data/demo.js`, sin API).
 
 | Ruta | Vista | Propósito |
 |---|---|---|
+| `/login` | `Login.vue` | Inicio de sesión (`POST auth/login`) en un card centrado, fuera de `AdminLayout`. Ruta pública; con sesión redirige a `/` |
 | `/` | `Dashboard.vue` | 4 KPI, gráfico de líneas, dona, actividad reciente, tareas |
 | `/usuarios` | `TableExample.vue` | Tabla con buscador, filtro, paginación, badges, acciones y modales |
 | `/usuarios/nuevo` | `FormExample.vue` | Formulario con input, select, textarea, fecha, checkbox y switch |
@@ -76,7 +80,7 @@ En `components/ui/`. Props en inglés (vocabulario de Bootstrap: `variant`, `siz
 |---|---|
 | `BaseCard` | Tarjeta. Props `title`, `subtitle`, `icon`, `noPadding`, `hover`. Slots `header`, `actions`, `footer` |
 | `BaseButton` | Botón. `variant` (primary, light, ghost, soft-primary, danger…), `size`, `icon`, `iconRight`, `iconOnly`, `loading`, `to` (enlace del router) |
-| `BaseInput` | Input con `label`, `icon`, `help`, `error`, `required`; `type="textarea"` dibuja textarea. `v-model` |
+| `BaseInput` | Input con `label`, `icon`, `help`, `error`, `required`, `autocomplete`; `type="textarea"` dibuja textarea; slot `append` (elemento al final, ej. mostrar contraseña). `v-model` |
 | `BaseSelect` | Select; `options` acepta textos o `{ value, label }`. `v-model` |
 | `BaseCheckbox` | Checkbox, o switch con la prop `switch`. `v-model` booleano |
 | `BaseBadge` | Estado. `variant`, `solid`, `dot`, `icon` |
@@ -106,5 +110,7 @@ Pistas de la base de datos:
 ## Estado y comunicación con la API
 
 - Estado global: Pinia (`src/stores/`).
-- Cliente HTTP: **Por definir** (`fetch` nativo o una librería como axios).
-- Cómo llegar a la API en desarrollo: **Por definir**. Ver `architecture.md`.
+- Cliente HTTP: **axios**, con la instancia de `src/services/api.js`: `baseURL` `/api` (o `VITE_API_URL`), agrega `Authorization: Bearer <token>` y, ante un 401 (salvo en `auth/login`), cierra la sesión y lleva al login. `mensajeError(error)` da el texto para el usuario.
+- En desarrollo, el proxy de Vite reenvía `/api` a `http://logy.local/index.php` (Apache de XAMPP; `vite.config.js`). Ver `architecture.md`.
+- Sesión: store `src/stores/sesion.js` (`token`, `usuario`, `autenticado`, `iniciar()`, `cargarUsuario()`, `cerrar()`). Con "Recordarme" se guarda en `localStorage` (`logy.sesion`); si no, en `sessionStorage`. Al arrancar, `App.vue` refresca el perfil con `auth/yo`.
+- Rutas: todas piden sesión salvo las que tienen `meta.publica` (guardia en `router/index.js`). Sin sesión se va a `/login?redirect=<ruta>`.

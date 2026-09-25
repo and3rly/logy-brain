@@ -13,6 +13,12 @@ Registro de todo el trabajo y los análisis del proyecto. Cada entrada es un arc
 
 | Fecha | Tipo | Entrada |
 |---|---|---|
+| 2026-09-25 | trabajo | [Repositorio git de la aplicación (logy-app)](2026-09-25-repositorio-logy-app.md) |
+| 2026-09-25 | trabajo | [Helper api_helper en lugar de MY_Controller](2026-09-25-helper-api.md) |
+| 2026-09-25 | trabajo | [VirtualHost logy.local para la API](2026-09-25-virtualhost-logy-local.md) |
+| 2026-09-25 | trabajo | [Login con JWT (API + interfaz)](2026-09-25-login-jwt.md) |
+| 2026-09-25 | trabajo | [Regla: los modelos extienden General_model](2026-09-25-regla-modelos-general-model.md) |
+| 2026-09-25 | trabajo | [Pantalla de login (solo frontend)](2026-09-25-login-frontend.md) |
 | 2026-09-25 | trabajo | [Plantilla administrativa de la interfaz](2026-09-25-plantilla-administrativa.md) |
 | 2026-09-25 | análisis | [Análisis de la estructura de la base de datos](2026-09-25-analisis-base-de-datos.md) |
 | 2026-09-25 | trabajo | [Instalación de Vue 3 + Vite en la interfaz](2026-09-25-instalacion-vue-vite.md) |

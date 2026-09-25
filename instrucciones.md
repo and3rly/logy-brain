@@ -23,6 +23,7 @@ Estas reglas no se saltan aunque una tarea parezca pequeña.
 - Cada commit o push pide confirmación en la herramienta (`ask` en `.claude/settings.json`).
 - Nunca, ni siquiera con la orden de commit: `push --force`, `reset --hard`, `rebase`, borrar ramas o tags, ni reescribir el historial, salvo que el usuario pida esa operación concreta.
 - Siempre se permiten comandos de solo lectura: `git status`, `git diff`, `git log`, `git show`, `git blame`.
+- Hay dos repositorios: **logy-app** (raíz `logy/`: `api/` e `interfaz/`) y **logy-brain** (`brain/`). logy-app excluye el brain, `CLAUDE.md`, `.claude/` y los archivos de configuración con secretos (`database.php`, `jwt.php`; se versionan sus plantillas `*.example.php`).
 - El repositorio de `brain/` (**logy-brain**) es **público**. En el brain nunca se escriben credenciales, datos personales, IPs o URLs internas de producción, ni nada sensible.
 
 ### 3. Base de datos: solo lectura
@@ -38,6 +39,12 @@ Estas reglas no se saltan aunque una tarea parezca pequeña.
 - Antes de cualquier desarrollo, lee `brain/desarrollo.md` y síguelo. El orden es: **Analizar → Reutilizar → Adaptar → Crear solo lo necesario**.
 - No escribas código sin antes analizar el backend, el frontend y cómo se comunican, y sin haber presentado el análisis de impacto.
 - Se mantiene la arquitectura MVC y las convenciones existentes. No se reinventa el proyecto ni se agregan librerías o patrones sin justificarlo.
+
+### 5. Los modelos extienden `General_model`
+
+- Todo modelo nuevo en `api/application/models/` extiende `General_model`, no `CI_Model`, y usa sus métodos (`guardar()`, `buscar()`, `cargar()`) antes de escribir consultas propias. Detalle en `brain/api.md`.
+- Un modelo que no extienda `General_model` solo se crea con la **autorización explícita del usuario para ese caso**. Claude lo propone, explica por qué y espera la respuesta. La excepción aprobada se anota en la wiki y en un comentario en la cabecera del modelo.
+- `General_model.php` no se modifica sin una orden explícita del usuario. Sus limitaciones se rodean desde el modelo hijo (ver los problemas conocidos en `brain/api.md`).
 
 ## Contexto que se carga siempre
 

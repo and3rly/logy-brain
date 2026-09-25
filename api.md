@@ -5,12 +5,38 @@
 | Método | Ruta | Controlador::método | Descripción |
 |---|---|---|---|
 | GET | `/` | `Welcome::index` | Página de ejemplo de CodeIgniter (se puede eliminar) |
+| POST | `auth/login` | `Auth::login` | Recibe `{ alias, clave }`. Devuelve `{ token, expira_en, usuario }`. 422 si faltan datos, 401 si son incorrectos o el usuario, rol o empresa están inactivos |
+| GET | `auth/yo` | `Auth::yo` | Requiere token. Devuelve `{ usuario }` y vuelve a comprobar que siga activo |
+
+En desarrollo, la URL completa es `http://logy.local/index.php/<ruta>` (o `/api/<ruta>` desde la interfaz, por el proxy de Vite).
+
+## Formato de respuesta
+
+Todas las respuestas son JSON con el formato `{ "exito": bool, "datos": mixed, "mensaje": string|null }` y el código HTTP que corresponde (200, 401, 405, 422…). Se arman con `responder()` y `responder_error()` del helper `api_helper.php`.
+
+## Autenticación (JWT)
+
+Decisión: `decisions/0004-autenticacion-jwt.md`.
+
+- La interfaz envía `Authorization: Bearer <token>`. El token (HS256, 8 h) lleva `sub` (id del usuario), `empresa_id`, `rol_id`, `alias`, `iss`, `iat`, `nbf` y `exp`.
+- `libraries/Token_jwt.php`: genera y valida tokens con firebase/php-jwt 6.10. Configuración en `config/jwt.php` (clave secreta, que nunca va al brain; emisor y duración).
+- `libraries/Sesion_token.php`: se carga en `autoload.php` con el nombre **`session`**. Valida el token de la petición y expone `userdata()` (`id`, `empresa_id`, `rol_id`, `alias`), `autenticado()` y `getMensaje()`. Por eso `General_model` completa `usuario_id` y `empresa_id` desde el token.
+- `helpers/api_helper.php` (en `autoload.php`): `responder()`, `responder_error()`, `entrada_json()` (lee el cuerpo JSON que envía axios), `exigir_metodo()` (405) y `exigir_sesion()` (401 sin un token válido). Los controladores extienden `CI_Controller`.
+- Dependencias con Composer en `api/` (`vendor` en `application/vendor`). Después de clonar: `composer install` dentro de `api/`.
 
 ## Modelos
 
+### Modelos del proyecto
+
+| Modelo | Tabla | Uso |
+|---|---|---|
+| `Usuario_model` | `usuario` | `autenticar($alias, $clave)`, `cargarSesion($id)`, `perfil()` (sin la clave), `datosToken()` |
+| `Rol_model` | `rol` | Consulta del rol del usuario |
+| `Empresa_model` | `empresa` | Consulta de la empresa del usuario |
+
 ### `General_model` (modelo base)
 
-`api/application/models/General_model.php`. Es la base de **todos** los modelos del proyecto: cada modelo nuevo extiende `General_model` y no `CI_Model` (ver `conventions.md`). Implementa un patrón tipo *Active Record*: el objeto del modelo representa una fila de la tabla.
+`api/application/models/General_model.php`. Es la base de los modelos del proyecto: cada modelo nuevo extiende `General_model` y no `CI_Model`. Solo hay excepciones con autorización explícita del usuario para ese caso (regla 5 de `instrucciones.md`). Implementa un patrón tipo *Active Record*: el objeto del modelo representa una fila de la tabla.
 
 **Cómo funciona**
 
@@ -42,7 +68,7 @@
 - `_uno` → devuelve una sola fila.
 - Las claves que empiezan con `_` son opciones y no se convierten en filtros.
 
-**Requisitos para que funcione**: las librerías `database` y `session` deben estar cargadas. Hoy **no lo están** (`autoload.php` está vacío) y la sesión no tiene `sess_save_path` configurado.
+**Requisitos para que funcione**: las librerías `database` y `session` deben estar cargadas. Desde el 2026-09-25, `autoload.php` carga `database` y, como `session`, la librería `Sesion_token` (sesión sin estado desde el JWT; ver arriba). No se usa la sesión de PHP de CodeIgniter.
 
 **Decisión del usuario (2026-09-25): `General_model` no se modifica.** Los problemas de abajo quedan documentados pero **no se corrigen**, y el archivo no se toca salvo que el usuario lo pida explícitamente. Mientras tanto, el código nuevo debe tenerlos en cuenta: no usar `_inicio` para paginar, no pasar a `_between` valores que vengan del usuario, y verificar que la fila exista antes de llamar a `cargar()`.
 
