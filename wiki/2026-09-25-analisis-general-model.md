@@ -31,6 +31,6 @@ Clonar logy-brain, instalarlo en el proyecto y verificar que lo que dice coincid
 
 ## Pendientes
 
-- [ ] Decidir si se corrigen los errores de `General_model` (requiere aprobación del usuario; es código existente).
-- [ ] Configurar el autoload de `database` y `session`, y `sess_save_path`.
+- [x] ¿Se corrigen los errores de `General_model`? **No**: el usuario decidió no corregir nada. El archivo queda como está y el código nuevo rodea sus limitaciones (ver `api.md`).
+- [ ] Configurar el autoload de `database` y `session`, y `sess_save_path` (no se hizo; sigue pendiente de una orden del usuario).
 - [ ] Aclarar si el comportamiento de `setTabla("a.b")` es intencional.

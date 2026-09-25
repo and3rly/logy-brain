@@ -44,6 +44,8 @@
 
 **Requisitos para que funcione**: las librerías `database` y `session` deben estar cargadas. Hoy **no lo están** (`autoload.php` está vacío) y la sesión no tiene `sess_save_path` configurado.
 
+**Decisión del usuario (2026-09-25): `General_model` no se modifica.** Los problemas de abajo quedan documentados pero **no se corrigen**, y el archivo no se toca salvo que el usuario lo pida explícitamente. Mientras tanto, el código nuevo debe tenerlos en cuenta: no usar `_inicio` para paginar, no pasar a `_between` valores que vengan del usuario, y verificar que la fila exista antes de llamar a `cargar()`.
+
 **Problemas detectados** (2026-09-25; ver wiki `2026-09-25-analisis-general-model.md`):
 
 1. `buscar()`: `$inicio = isset($args["_inicio"]) ?? 0;` guarda `true`/`false` y no el valor, así que la paginación con `_inicio` no funciona.
@@ -55,10 +57,6 @@
 
 ## Base de datos
 
-Nombre: **Por definir**
+MySQL 8.0, base `db_logy`, 46 tablas. La estructura completa por módulo, las convenciones y las inconsistencias están en **`base-de-datos.md`**.
 
-Convenciones que el modelo base da por hechas: llave primaria `id`; tabla con el mismo nombre que el modelo (sin `_model`, en minúsculas); columnas opcionales `usuario_id` y `empresa_id`, que se completan desde la sesión (sugiere un sistema multiempresa).
-
-### Tablas
-
-(ninguna todavía; por cada tabla: propósito, columnas clave y relaciones)
+El esquema coincide con lo que espera `General_model`: PK `id` en todas las tablas, nombre de tabla igual al del modelo, y `usuario_id`/`empresa_id` en casi todas.

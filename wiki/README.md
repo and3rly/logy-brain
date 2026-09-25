@@ -13,6 +13,8 @@ Registro de todo el trabajo y los análisis del proyecto. Cada entrada es un arc
 
 | Fecha | Tipo | Entrada |
 |---|---|---|
+| 2026-09-25 | análisis | [Análisis de la estructura de la base de datos](2026-09-25-analisis-base-de-datos.md) |
+| 2026-09-25 | trabajo | [Instalación de Vue 3 + Vite en la interfaz](2026-09-25-instalacion-vue-vite.md) |
 | 2026-09-25 | análisis | [Instalación del brain y análisis de General_model](2026-09-25-analisis-general-model.md) |
 | 2026-09-25 | trabajo | [Repositorio git del brain (logy-brain)](2026-09-25-repositorio-logy-brain.md) |
 | 2026-09-25 | trabajo | [Proceso de desarrollo: analizar y reutilizar antes de crear](2026-09-25-proceso-de-desarrollo.md) |

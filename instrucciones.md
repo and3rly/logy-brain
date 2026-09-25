@@ -27,7 +27,7 @@ Estas reglas no se saltan aunque una tarea parezca pequeña.
 
 ### 3. Base de datos: solo lectura
 
-- Claude solo ejecuta consultas de lectura: `SELECT`, `SHOW`, `DESCRIBE`, `EXPLAIN`.
+- Claude solo ejecuta consultas de lectura: `SELECT`, `SHOW`, `DESCRIBE`, `EXPLAIN`. Para hacerlo usa `brain/herramientas/db_lectura.php` o, si escribe otra consulta, abre la sesión en `READ ONLY` con el mismo patrón que ese script, para que el servidor bloquee cualquier escritura.
 - **Prohibido**: `INSERT`, `UPDATE`, `DELETE`, `REPLACE`, `TRUNCATE`, `DROP`, `ALTER`, `CREATE`, `RENAME`, `GRANT`, `REVOKE`, llamar procedimientos que modifiquen datos, y cualquier migración.
 - Si hace falta modificar la BD, Claude escribe el SQL, lo documenta en la wiki y se lo entrega al usuario para que lo ejecute.
 - Las consultas pesadas llevan `LIMIT`. Los datos personales o sensibles no se copian a la wiki; solo se describe su estructura o se muestran datos agregados.
@@ -49,7 +49,8 @@ Estas reglas no se saltan aunque una tarea parezca pequeña.
 
 - `brain/desarrollo.md`: proceso obligatorio antes y durante cualquier desarrollo
 - `brain/architecture.md`: cómo se conectan api e interfaz, entornos y acceso a la BD
-- `brain/api.md`: endpoints, modelos y base de datos
+- `brain/api.md`: endpoints y modelos (incluye `General_model`)
+- `brain/base-de-datos.md`: esquema por módulo, convenciones e inconsistencias de la BD
 - `brain/interfaz.md`: pantallas, componentes y estado
 - `brain/glossary.md`: términos del dominio
 - `brain/decisions/`: registro de decisiones (ADR), una por archivo (`NNNN-titulo.md`, según `0000-plantilla.md`)
