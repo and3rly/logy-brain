@@ -73,6 +73,6 @@ FLUSH PRIVILEGES;
 
 - `api/application/config/config.php`: `base_url` e `encryption_key` están vacíos, `index_page` es `index.php` (aún no hay reescritura de URL).
 - `api/application/config/database.php`: `mysqli`, conectado a la BD remota `db_logy` (ver arriba).
-- `api/application/config/autoload.php`: carga `database` y `sesion_token` (como `session`), y el modelo `General_model`.
+- `api/application/config/autoload.php`: carga `database` y `sesion_token` (como `session`), los helpers `api` y `logy`, y el modelo `General_model`.
 - `api/application/config/jwt.php`: clave secreta del JWT (**no se versiona ni se copia al brain**), emisor y duración.
 - `api/application/config/config.php`: `composer_autoload` apunta a `application/vendor/autoload.php`.

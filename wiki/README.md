@@ -13,6 +13,9 @@ Registro de todo el trabajo y los análisis del proyecto. Cada entrada es un arc
 
 | Fecha | Tipo | Entrada |
 |---|---|---|
+| 2026-09-25 | trabajo | [Formato: un elemento por línea en arreglos y objetos](2026-09-25-formato-arreglos.md) |
+| 2026-09-25 | análisis | [Análisis del helper logy_helper](2026-09-25-analisis-logy-helper.md) |
+| 2026-09-25 | trabajo | [Convención: parámetros como arreglo en los modelos](2026-09-25-parametros-como-arreglo.md) |
 | 2026-09-25 | trabajo | [Repositorio git de la aplicación (logy-app)](2026-09-25-repositorio-logy-app.md) |
 | 2026-09-25 | trabajo | [Helper api_helper en lugar de MY_Controller](2026-09-25-helper-api.md) |
 | 2026-09-25 | trabajo | [VirtualHost logy.local para la API](2026-09-25-virtualhost-logy-local.md) |

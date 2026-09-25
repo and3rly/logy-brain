@@ -21,6 +21,7 @@ Decisión: `decisions/0004-autenticacion-jwt.md`.
 - La interfaz envía `Authorization: Bearer <token>`. El token (HS256, 8 h) lleva `sub` (id del usuario), `empresa_id`, `rol_id`, `alias`, `iss`, `iat`, `nbf` y `exp`.
 - `libraries/Token_jwt.php`: genera y valida tokens con firebase/php-jwt 6.10. Configuración en `config/jwt.php` (clave secreta, que nunca va al brain; emisor y duración).
 - `libraries/Sesion_token.php`: se carga en `autoload.php` con el nombre **`session`**. Valida el token de la petición y expone `userdata()` (`id`, `empresa_id`, `rol_id`, `alias`), `autenticado()` y `getMensaje()`. Por eso `General_model` completa `usuario_id` y `empresa_id` desde el token.
+- `helpers/logy_helper.php` (en `autoload.php`): funciones generales del proyecto: `elemento($arreglo, $clave, $defecto)` y `verPropiedad($objeto, $prop, $defecto)` (devuelven el valor si existe y no está vacío), `Hoy($hora)`, `sumar_tiempo()`, `generarCodigo()`, `eliminarAcento()`, `censurar_mail()`, `array_field()`, `verLetra()`, `getTiposProductos()`, entre otras. Detalle y observaciones en la wiki `2026-09-25-analisis-logy-helper.md`.
 - `helpers/api_helper.php` (en `autoload.php`): `responder()`, `responder_error()`, `entrada_json()` (lee el cuerpo JSON que envía axios), `exigir_metodo()` (405) y `exigir_sesion()` (401 sin un token válido). Los controladores extienden `CI_Controller`.
 - Dependencias con Composer en `api/` (`vendor` en `application/vendor`). Después de clonar: `composer install` dentro de `api/`.
 
@@ -30,7 +31,7 @@ Decisión: `decisions/0004-autenticacion-jwt.md`.
 
 | Modelo | Tabla | Uso |
 |---|---|---|
-| `Usuario_model` | `usuario` | `autenticar($alias, $clave)`, `cargarSesion($id)`, `perfil()` (sin la clave), `datosToken()` |
+| `Usuario_model` | `usuario` | `autenticar(["alias", "clave"])`, `cargarSesion(["id"])`, `perfil()` (sin la clave), `datosToken()` |
 | `Rol_model` | `rol` | Consulta del rol del usuario |
 | `Empresa_model` | `empresa` | Consulta de la empresa del usuario |
 
