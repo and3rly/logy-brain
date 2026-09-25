@@ -22,4 +22,9 @@
 - JavaScript, no TypeScript.
 - Imports internos con el alias `@/` (→ `src/`), no con rutas relativas largas.
 - Rutas en `src/router/index.js`; estado global en stores de Pinia dentro de `src/stores/`.
-- Estilo de componentes, organización de vistas y componentes, y librería de UI: **Por definir**. Lo fija la primera pantalla que se construya.
+- Componentes con `<script setup>` (Composition API) y `defineModel` para `v-model`.
+- UI: Bootstrap 5 (solo CSS) + Font Awesome + componentes propios. Antes de escribir marcado a mano, usar los de `components/ui/` (`BaseCard`, `BaseButton`, `BaseInput`, `BaseTable`…). Detalle en `interfaz.md`.
+- Organización: `layouts/` (estructura de página), `components/layout/` (sidebar, navbar), `components/ui/` (componentes base con prefijo `Base`), `views/` (pantallas, una por ruta).
+- Props de los componentes base en inglés (vocabulario de Bootstrap: `variant`, `size`, `label`); variables, funciones, stores y datos en español.
+- Colores solo con las variables CSS de `assets/css/variables.css`, definidas para los dos temas. Estilos de componente en `<style scoped>`.
+- Cada ruta lleva `meta.title` y `meta.breadcrumb`.
